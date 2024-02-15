@@ -35,6 +35,15 @@
   :config (setq evil-normal-state-cursor '(box "purple"))
   :config (setq evil-emacs-state-cursor '(box "green"))
   )
+
+(leaf magit
+  :ensure t
+  )
+(leaf which-key
+  :ensure t
+  :config (which-key-mode)
+  :config (setq which-key-idle-delay 1000)
+  )
 ;; You can also configure builtin package via leaf!
 (leaf cus-start
   :doc "define customization properties of builtins"
@@ -62,61 +71,56 @@
   :config
   (setq org-journal-dir "~/org/journal")
   (setq work-directory "~/org/")
-(setq memofile (concat work-directory "memo.org"))
-(setq todofile (concat work-directory "TODO.org"))
-(setq org-agenda-files `(,todofile ))
-(setq org-capture-templates
-      '(
-	    ("m" "メモ" entry (file+headline memofile "memo")
-         "** %?\n*** 参考\n\nEntered on %U\n %i\n %a\n")
+  (setq memofile (concat work-directory "memo.org"))
+  (setq todofile (concat work-directory "TODO.org"))
+  (setq org-agenda-files `(,todofile ))
+  (setq org-capture-templates
+        '(
+          ("m" "メモ" entry (file+headline memofile "memo")
+           "** %?\n*** 参考\n\nEntered on %U\n %i\n %a\n")
 
-	    ("p" "プログラミングノート" entry (file+headline  memofile "Programming note")
-	     "** %? \n\n*** カテゴリ\n\n*** 内容\n\n\nEntered on %U\n %i\n %a\n")
+	  ("p" "プログラミングノート" entry (file+headline  memofile "Programming note")
+	   "** %? \n\n*** カテゴリ\n\n*** 内容\n\n\nEntered on %U\n %i\n %a\n")
 
-	    ("c" "チェックボックス" checkitem (file+headline   todofile "checkbox")
-	     "[ ] %? %U\n")
-	    ("t" "TODO" entry (file+headline todofile "ToDo")
-         "*** TODO [/] %?\n- [ ] \nCAPTURED_AT: %U\n %i\n")
+	  ("c" "チェックボックス" checkitem (file+headline   todofile "checkbox")
+	   "[ ] %? %U\n")
+	  ("t" "TODO" entry (file+headline todofile "ToDo")
+           "*** TODO [/] %?\n- [ ] \nCAPTURED_AT: %U\n %i\n")
 
-	    ("r" "調査内容" entry (file+headline memofile "Reserch")
-	     "** %?\nEntered on %U\n %i\n %a\n")
+	  ("r" "調査内容" entry (file+headline memofile "Reserch")
+	   "** %?\nEntered on %U\n %i\n %a\n")
 
-	    ("S" "学習内容" entry (file+headline memofile "Study")
-	     "** %?\nEntered on %U\n %i\n %a\n")
+	  ("S" "学習内容" entry (file+headline memofile "Study")
+	   "** %?\nEntered on %U\n %i\n %a\n")
 
-	    ("w" "単語帳" item (file+headline memofile "words")
-	     "- %?\nEntered on %U\n %i\n %a\n")
+	  ("w" "単語帳" item (file+headline memofile "words")
+	   "- %?\nEntered on %U\n %i\n %a\n")
 
-	    ("W" "単語帳（複数語）" entry (file+headline memofile "words")
-	     "** %?\n - \nEntered on %U\n %i\n %a\n")
-
-
-        ("l" "記録" entry (file+headline memofile "Log")
-         "** %?\nEntered on %U\n %i\n %a\n")
-
-        ("s" "文章" entry (file+headline memofile "文章")
-         "** %?\nEntered on %U\n %i\n %a\n")
-
-	    ("i" "アイデア" entry (file+headline memofile "アイデア")
-         "* %?\nEntered on %U\n %i\n %a\n")
+	  ("W" "単語帳（複数語）" entry (file+headline memofile "words")
+	   "** %?\n - \nEntered on %U\n %i\n %a\n")
 
 
-	    ("b" "経済" entry (file+headline memofile "Business")
-         "** %?\nEntered on %U\n %i\n %a\n")
+          ("l" "記録" entry (file+headline memofile "Log")
+           "** %?\nEntered on %U\n %i\n %a\n")
 
-        ("P" "Project" entry (file+headline memofile "Project")
-         "** %?\nEntered on %U\n %i\n")
-        )
-      ))
+          ("s" "文章" entry (file+headline memofile "文章")
+           "** %?\nEntered on %U\n %i\n %a\n")
 
-  ;; ここに org-journal の設定を追加
-
-(leaf my-custom-config
-  :config
-  (global-set-key (kbd "C-c C-j") 'org-journal-new-entry))
+	  ("i" "アイデア" entry (file+headline memofile "アイデア")
+           "* %?\nEntered on %U\n %i\n %a\n")
 
 
-(global-set-key (kbd "C-c C-j") 'org-journal-new-entry)
+	  ("b" "経済" entry (file+headline memofile "Business")
+           "** %?\nEntered on %U\n %i\n %a\n")
+
+          ("P" "Project" entry (file+headline memofile "Project")
+           "** %?\nEntered on %U\n %i\n")))
+  
+  (global-set-key (kbd "C-c C-j") 'org-journal-new-entry)
+  )
+
+
+
 
 
 ;; org-capture
@@ -129,6 +133,8 @@
   :custom ((auto-revert-interval . 0.1))
   :global-minor-mode global-auto-revert-mode)
 
+;; *scratch* buffer をテキストモードで開く
+(setq initial-major-mode 'text-mode)
 
 ;; scratch buffer をorg-modeで作成するmy-scratch-buffer
 ;; https://emacs.stackexchange.com/questions/16492/is-it-possible-to-create-an-org-mode-scratch-buffer
