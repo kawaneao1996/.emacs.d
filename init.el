@@ -240,7 +240,20 @@
   :custom ((ivy-prescient-retain-classic-highlighting . t))
   :global-minor-mode t)
 
-
+(leaf my-utility
+  :doc "https://emacs.stackexchange.com/questions/22663/how-can-transparency-be-toggled"
+  :config
+  (defun toggle-transparency ()
+    (interactive)
+    (let ((alpha (frame-parameter nil 'alpha)))
+      (if (eq
+           (if (numberp alpha)
+               alpha
+             (cdr alpha)) ; may also be nil
+           100)
+          (set-frame-parameter nil 'alpha '(85 . 50))
+        (set-frame-parameter nil 'alpha '(100 . 100))))
+    ))
 ;; ...
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
