@@ -1,4 +1,4 @@
-;; <leaf-install-code>
+;;; <leaf-install-code>
 (eval-and-compile
   (customize-set-variable
    'package-archives '(("org" . "https://orgmode.org/elpa/")
@@ -53,19 +53,22 @@
            (tool-bar-mode . nil)
            (scroll-bar-mode . nil)
            (indent-tabs-mode . nil)
-           ))
-(global-set-key (kbd "C-c t") 'display-line-numbers-mode)
-;; emacs の起動画面を消す
-;; https://pcvogel.sarakura.net/2013/06/17/31151
-(setq inhibit-startup-message t)
-(setq initial-scratch-message nil)
-;;カーソルの点滅を消す
-(blink-cursor-mode 0)
-;;括弧の自動補完
-(electric-pair-mode 1)
+           )
+  :config
+  
+  (global-set-key (kbd "C-c t") 'display-line-numbers-mode)
+  ;; emacs の起動画面を消す
+  ;; https://pcvogel.sarakura.net/2013/06/17/31151
+  (setq inhibit-startup-message t)
+  (setq initial-scratch-message nil)
+  ;;カーソルの点滅を消す
+  (blink-cursor-mode 0)
+  ;;括弧の自動補完
+  (electric-pair-mode 1)
 
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'org-mode-hook 'display-line-numbers-mode)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+  (add-hook 'org-mode-hook 'display-line-numbers-mode)
+  )
 (leaf org-journal
   :ensure t
   :config
