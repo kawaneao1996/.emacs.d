@@ -65,6 +65,7 @@
     ;; "f" 'projectile-find-file
     "f" 'counsel-find-file
     "g" 'magit-status
+    "h" 'lsp-describe-thing-at-point
     "j" 'dired-jump
     "k" 'kill-buffer
     "m" 'magit-status
@@ -77,6 +78,10 @@
     "w" 'save-buffer
     ;; "q" 'save-buffer-kill-terminal
     "x" 'toggle-transparency
+    "0" 'delete-window
+    "1" 'delete-other-windows
+    "2" 'split-window-below
+    "3" 'split-window-right
     ))
 
 (leaf magit
@@ -98,6 +103,7 @@
            (indent-tabs-mode . nil)
            )
   :config
+  (add-to-list 'exec-path (expand-file-name "~/.cargo.bin"))
   (set-language-environment "UTF-8")
   (global-set-key (kbd "C-c t") 'display-line-numbers-mode)
   ;; emacs の起動画面を消す
@@ -285,14 +291,38 @@
   :config
   (leaf treemacs-evil :after (treemacs evil) :ensure t)
   (leaf treemacs-magit :after (treemacs magit) :ensure t)
-  (setq treemacs-git-mode 'deferred)
+  ;; (setq treemacs-git-mode 'deferred)
+  (setq treemacs-git-mode 'simple)
   )
 (leaf neotree :ensure t)
 
 ;; (leaf avy
 ;;   :ensure t)
 
-;; ↑package setting end
+(leaf yasnippet
+  :ensure t
+  :config
+  ;; (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode))
+
+(leaf rust-mode
+  :ensure t
+  )
+
+(leaf cargo
+  :ensure t
+  :config (add-hook 'rust-mode-hook 'cargo-minor-mode)
+  )
+
+;; (leaf lsp-mode
+;;   :ensure t
+;;   :init (yas-global-mode)
+;;   :hook (rust-mode . lsp)
+;;   )
+
+;; (leaf lsp-ui :ensure t)
+
+;; ;; ↑package setting end
 
 (leaf my-utility
   :doc "https://emacs.stackexchange.com/questions/22663/how-can-transparency-be-toggled"
