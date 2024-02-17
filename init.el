@@ -29,12 +29,51 @@
   :ensure t
   :bind (("M-=" . transient-dwim-dispatch)))
 
-(leaf evil :ensure t
+(leaf evil
+  :doc "https://fnwiya.hatenablog.com/entry/2016/01/12/213149"
+  :ensure t
+  :config   (setq evil-cross-lines t)           ;行の端でhlしたとき前/次の行に移動する
+  (setq evil-want-C-i-jump nil)       ;C-iはTABとして使う
   :config (evil-mode 1)
   :config (evil-set-initial-state 'org-mode 'emacs)
   :config (setq evil-normal-state-cursor '(box "purple"))
   :config (setq evil-emacs-state-cursor '(box "green"))
+  :config   (setq evil-want-fine-undo t)     ;操作を元に戻す単位を細かくする
+  (setq evil-move-cursor-back nil) ;改行文字の上に移動可能にする(C-x C-e用)
+  (setq evil-esc-delay 0)
   )
+(leaf evil-matchit
+  :ensure t
+  :config (global-evil-matchit-mode 1))
+(leaf evil-leader
+  :ensure t
+  :config
+  ;; evil leader
+  (setq evil-leader/in-all-states 1)
+  (global-evil-leader-mode)
+  (evil-leader/set-leader "SPC")
+  (evil-leader/set-key
+    "SPC" 'execute-extended-command
+    ":" 'shell-command
+    "a" 'avy-goto-word-0
+    "b" 'helm-buffers-list
+    "B" 'ibuffer
+    "d" 'kill-this-buffer
+    "e" 'helm-find-file
+    "F" 'helm-find-file
+    "f" 'projectile-find-file
+    "g" 'magit-status
+    "h" 'evil-search-highlight-persist-remove-all
+    "j" 'dired-jump
+    "k" 'kill-buffer
+    "m" 'magit-status
+    "q" 'kill-buffer-and-window
+    "r" 'helm-recentf
+    "s" 'isearch
+    "t" 'other-window
+    "w" 'save-buffer
+    "x" 'helm-M-x
+    ))
 
 (leaf magit
   :ensure t
