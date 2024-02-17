@@ -59,7 +59,6 @@
     ;; "a" 'avy-goto-word-0
     "b" 'counsel-ibuffer
     "B" 'byte-compile-file
-    "c" 'comment-line
     "C" (lambda() (interactive)(find-file "~/.emacs.d/init.el"))
     "d" 'kill-this-buffer
     ;; "f" 'projectile-find-file
@@ -77,6 +76,7 @@
     "T" 'treemacs
     "w" 'save-buffer
     ;; "q" 'save-buffer-kill-terminal
+    ";" 'comment-line
     "x" 'toggle-transparency
     "0" 'delete-window
     "1" 'delete-other-windows
@@ -319,8 +319,52 @@
 ;;   :init (yas-global-mode)
 ;;   :hook (rust-mode . lsp)
 ;;   )
+;; (leaf setup-straight
+;;   :config
+;;   (defvar bootstrap-version)
+;;   (let ((bootstrap-file
+;;          (expand-file-name
+;;           "straight/repos/straight.el/bootstrap.el"
+;;           (or (bound-and-true-p straight-base-dir)
+;;               user-emacs-directory)))
+;;         (bootstrap-version 7))
+;;     (unless (file-exists-p bootstrap-file)
+;;       (with-current-buffer
+;;           (url-retrieve-synchronously
+;;            "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+;;            'silent 'inhibit-cookies)
+;;         (goto-char (point-max))
+;;         (eval-print-last-sexp)))
+;;     (load bootstrap-file nil 'nomessage)))
 
 ;; (leaf lsp-ui :ensure t)
+;; (leaf copilot
+;;   :doc "https://zenn.dev/lecto/articles/dad1d04c0605a1" "https://www.irfanhabib.com/2022-04-26-setting-up-github-copilot-in-emacs/"
+;;   :el-get (copilot
+;;            :type github
+;;            :pkgname "zerolfx/copilot.el"
+;;            )
+;;   :config
+;;   (leaf jsonrpc :ensure t)
+;;   (leaf editorconfig
+;;     :ensure t
+;;     )
+;;   (leaf s
+;;     :ensure t
+;;     )
+;;   (leaf dash
+;;     :ensure t
+;;     )
+;;   (customize-set-variable 'copilot-enable-predicates '(evil-insert-state-p))
+;;   (add-hook 'prog-mode-hook 'copilot-mode)
+;;   (defun my/copilot-tab ()
+;;     (interactive)
+;;     (or (copilot-accept-completion)
+;;         (indent-for-tab-command)))
+
+;;   (with-eval-after-load 'copilot
+;;     (define-key copilot-mode-map (kbd "<tab>") #'my/copilot-tab))
+;;   )
 
 ;; ;; ↑package setting end
 
