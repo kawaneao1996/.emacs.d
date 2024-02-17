@@ -56,10 +56,11 @@
   (evil-leader/set-key
     "SPC" 'execute-extended-command
     ":" 'shell-command
-    "a" 'avy-goto-word-0
+    ;; "a" 'avy-goto-word-0
     "b" 'counsel-ibuffer
     "B" 'byte-compile-file
     "c" 'comment-line
+    "C" (lambda() (interactive)(find-file "~/.emacs.d/init.el"))
     "d" 'kill-this-buffer
     ;; "f" 'projectile-find-file
     "f" 'counsel-find-file
@@ -187,10 +188,6 @@
   (global-set-key (kbd "C-c C-j") 'org-journal-new-entry)
   )
 
-
-
-
-
 ;; org-capture
 ;; キーバインドの設定
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -200,7 +197,6 @@
   :tag "builtin"
   :custom ((auto-revert-interval . 0.1))
   :global-minor-mode global-auto-revert-mode)
-
 
 ;; Nest package configurations
 (leaf flycheck
@@ -283,6 +279,9 @@
   :after prescient ivy
   :custom ((ivy-prescient-retain-classic-highlighting . t))
   :global-minor-mode t)
+
+;; (leaf avy
+;;   :ensure t)
 
 (leaf my-utility
   :doc "https://emacs.stackexchange.com/questions/22663/how-can-transparency-be-toggled"
