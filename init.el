@@ -111,6 +111,28 @@
   (add-hook 'org-mode-hook 'display-line-numbers-mode)
   ;; *scratch* buffer をテキストモードで開く
   (setq initial-major-mode 'text-mode)
+  ;; scratch buffer をorg-modeで作成するmy-scratch-buffer
+  ;; https://emacs.stackexchange.com/questions/16492/is-it-possible-to-create-an-org-mode-scratch-buffer
+  ;; lawlistさん作
+  (defun my-scratch-buffer ()
+    "Create a new scratch buffer -- \*hello-world\*"
+    (interactive)
+    (let ((n 0)
+          bufname buffer)
+      (catch 'done
+        (while t
+          (setq bufname (concat "*my-scratch-org-mode"
+                                (if (= n 0) "" (int-to-string n))
+                                "*"))
+          (setq n (1+ n))
+          (when (not (get-buffer bufname))
+            (setq buffer (get-buffer-create bufname))
+            (with-current-buffer buffer
+              (org-mode))
+            ;; When called non-interactively, the `t` targets the other window (if it exists).
+            (throw 'done (display-buffer buffer t))) ))))
+  ;; 警告音もフラッシュも全て無効(警告音が完全に鳴らなくなるので注意)
+  (setq ring-bell-function 'ignore)
   )
 (leaf org-journal
   :ensure t
@@ -180,28 +202,6 @@
   :global-minor-mode global-auto-revert-mode)
 
 
-;; scratch buffer をorg-modeで作成するmy-scratch-buffer
-;; https://emacs.stackexchange.com/questions/16492/is-it-possible-to-create-an-org-mode-scratch-buffer
-;; lawlistさん作
-(defun my-scratch-buffer ()
-  "Create a new scratch buffer -- \*hello-world\*"
-  (interactive)
-  (let ((n 0)
-        bufname buffer)
-    (catch 'done
-      (while t
-        (setq bufname (concat "*my-scratch-org-mode"
-                              (if (= n 0) "" (int-to-string n))
-                              "*"))
-        (setq n (1+ n))
-        (when (not (get-buffer bufname))
-          (setq buffer (get-buffer-create bufname))
-          (with-current-buffer buffer
-            (org-mode))
-          ;; When called non-interactively, the `t` targets the other window (if it exists).
-          (throw 'done (display-buffer buffer t))) ))))
-;; 警告音もフラッシュも全て無効(警告音が完全に鳴らなくなるので注意)
-(setq ring-bell-function 'ignore)
 ;; Nest package configurations
 (leaf flycheck
   :doc "On-the-fly syntax checking"
