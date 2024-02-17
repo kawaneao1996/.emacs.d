@@ -98,7 +98,7 @@
            (indent-tabs-mode . nil)
            )
   :config
-  
+  (set-language-environment "UTF-8")
   (global-set-key (kbd "C-c t") 'display-line-numbers-mode)
   ;; emacs の起動画面を消す
   ;; https://pcvogel.sarakura.net/2013/06/17/31151
