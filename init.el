@@ -72,7 +72,8 @@
     "r" 'helm-recentf
     "s" 'eshell
     "S" 'shell
-    "t" 'treemacs
+    "t" 'neotree-toggle
+    "T" 'treemacs
     "w" 'save-buffer
     ;; "q" 'save-buffer-kill-terminal
     ;; "x" 'helm-M-x
@@ -279,9 +280,19 @@
   :after prescient ivy
   :custom ((ivy-prescient-retain-classic-highlighting . t))
   :global-minor-mode t)
+(leaf treemacs
+  :ensure t
+  :config
+  (leaf treemacs-evil :after (treemacs evil) :ensure t)
+  (leaf treemacs-magit :after (treemacs magit) :ensure t)
+  (setq treemacs-git-mode 'deferred)
+  )
+(leaf neotree :ensure t)
 
 ;; (leaf avy
 ;;   :ensure t)
+
+;; ↑package setting end
 
 (leaf my-utility
   :doc "https://emacs.stackexchange.com/questions/22663/how-can-transparency-be-toggled"
