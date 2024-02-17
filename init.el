@@ -109,6 +109,8 @@
 
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
   (add-hook 'org-mode-hook 'display-line-numbers-mode)
+  ;; *scratch* buffer をテキストモードで開く
+  (setq initial-major-mode 'text-mode)
   )
 (leaf org-journal
   :ensure t
@@ -177,8 +179,6 @@
   :custom ((auto-revert-interval . 0.1))
   :global-minor-mode global-auto-revert-mode)
 
-;; *scratch* buffer をテキストモードで開く
-(setq initial-major-mode 'text-mode)
 
 ;; scratch buffer をorg-modeで作成するmy-scratch-buffer
 ;; https://emacs.stackexchange.com/questions/16492/is-it-possible-to-create-an-org-mode-scratch-buffer
