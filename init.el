@@ -259,6 +259,43 @@
     (other-window -1))
   (global-set-key (kbd "C-;") 'other-window)
   (global-set-key (kbd "C-:") 'counter-other-window)
+  (defface my-evil-state-emacs-face
+    '((t (:background "Green" :foreground "Blue")))
+    "Evil Mode Emacs State Face")
+
+  (defface my-evil-state-insert-face
+    '((t (:background "DodgerBlue1" :foreground "White")))
+    "Evil Mode Insert State Face")
+
+  (defface my-evil-state-normal-face
+    '((t (:background "Purple" :foreground "White")))
+    "Evil Mode Normal Stace Face")
+
+  (defface my-evil-state-visual-face
+    '((t (:background "Orange" :foreground "White")))
+    "Evil Mode Normal Stace Face")
+
+  ;; Override defun from evil-core.el
+  (defun evil-generate-mode-line-tag (&optional state)
+    "Generate the evil mode-line tag for STATE."
+    (let ((tag (evil-state-property state :tag t)))
+      ;; prepare mode-line: add tooltip
+      (when (functionp tag)
+        (setq tag (funcall tag)))
+      (if (stringp tag)
+          (propertize tag
+	              'face (cond
+		             ((string= "normal" state)
+		              'my-evil-state-normal-face)
+		             ((string= "insert" state)
+		              'my-evil-state-insert-face)
+		             ((string= "visual" state)
+		              'my-evil-state-visual-face)
+		             ((string= "emacs" state)
+		              'my-evil-state-emacs-face))
+	              'help-echo (evil-state-property state :name)
+	              'mouse-face 'mode-line-highlight)
+        tag)))
   )
 ;; ...
 (custom-set-variables
