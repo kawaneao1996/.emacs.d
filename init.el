@@ -34,6 +34,7 @@
   :ensure t
   :config   (setq evil-cross-lines t)           ;行の端でhlしたとき前/次の行に移動する
   (setq evil-want-C-i-jump nil)       ;C-iはTABとして使う
+  (setq evil-search-module 'isearch)
   :config (evil-mode 1)
   :config (evil-set-initial-state 'org-mode 'emacs)
   :config (setq evil-normal-state-cursor '(box "purple"))
@@ -56,23 +57,24 @@
     "SPC" 'execute-extended-command
     ":" 'shell-command
     "a" 'avy-goto-word-0
-    "b" 'helm-buffers-list
-    "B" 'ibuffer
+    "b" 'counsel-ibuffer
+    "B" 'byte-compile-file
+    "c" 'comment-line
     "d" 'kill-this-buffer
-    "e" 'helm-find-file
-    "F" 'helm-find-file
-    "f" 'projectile-find-file
+    ;; "f" 'projectile-find-file
+    "f" 'counsel-find-file
     "g" 'magit-status
-    "h" 'evil-search-highlight-persist-remove-all
     "j" 'dired-jump
     "k" 'kill-buffer
     "m" 'magit-status
     "q" 'kill-buffer-and-window
     "r" 'helm-recentf
-    "s" 'isearch
-    "t" 'other-window
+    "s" 'eshell
+    "S" 'shell
+    "t" 'treemacs
     "w" 'save-buffer
-    "x" 'helm-M-x
+    ;; "q" 'save-buffer-kill-terminal
+    ;; "x" 'helm-M-x
     ))
 
 (leaf magit
