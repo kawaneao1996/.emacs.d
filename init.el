@@ -76,7 +76,7 @@
     "T" 'treemacs
     "w" 'save-buffer
     ;; "q" 'save-buffer-kill-terminal
-    ;; "x" 'helm-M-x
+    "x" 'toggle-transparency
     ))
 
 (leaf magit
