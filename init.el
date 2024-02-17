@@ -305,16 +305,19 @@
   ;; (yas-reload-all)
   (add-hook 'prog-mode-hook #'yas-minor-mode))
 
-(leaf rust-mode
-  :ensure t
-  )
+(leaf rustic
+  :ensure t)
 
-(leaf cargo
-  :ensure t
-  :config (add-hook 'rust-mode-hook 'cargo-minor-mode)
-  )
+;; (leaf rust-mode
+;;   :ensure t
+;;   )
 
-;; (leaf lsp-mode
+;; (leaf cargo
+;;   :ensure t
+;;   :config (add-hook 'rust-mode-hook 'cargo-minor-mode)
+;;   )
+
+;; ;; (leaf lsp-mode
 ;;   :ensure t
 ;;   :init (yas-global-mode)
 ;;   :hook (rust-mode . lsp)
@@ -432,6 +435,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auto-revert-interval 0.1)
+ '(counsel-find-file-ignore-regexp "\\(?:\\.\\(?:\\.?/\\)\\)")
+ '(counsel-yank-pop-separator "
+----------
+")
  '(custom-enabled-themes '(deeper-blue))
  '(flycheck-emacs-lisp-initialize-packages t)
  '(indent-tabs-mode nil)
@@ -444,7 +451,7 @@
      ("melpa" . "https://melpa.org/packages/")
      ("gnu" . "https://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(flycheck-elsa flycheck-package flycheck transient-dwim leaf-convert leaf-tree blackout el-get hydra leaf-keywords leaf))
+   '(lsp-mode flycheck-elsa flycheck-package flycheck transient-dwim leaf-convert leaf-tree blackout el-get hydra leaf-keywords leaf))
  '(prescient-aggressive-file-save t)
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil)
