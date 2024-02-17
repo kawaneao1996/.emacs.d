@@ -253,7 +253,13 @@
            100)
           (set-frame-parameter nil 'alpha '(85 . 50))
         (set-frame-parameter nil 'alpha '(100 . 100))))
-    ))
+    )
+  (defun counter-other-window ()
+    (interactive)
+    (other-window -1))
+  (global-set-key (kbd "C-;") 'other-window)
+  (global-set-key (kbd "C-:") 'counter-other-window)
+  )
 ;; ...
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
