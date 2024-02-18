@@ -82,6 +82,7 @@
     "1" 'delete-other-windows
     "2" 'split-window-below
     "3" 'split-window-right
+    "9" 'create-scratch-buffer
     ))
 
 (leaf magit
@@ -103,6 +104,11 @@
            (indent-tabs-mode . nil)
            )
   :config
+  (defun create-scratch-buffer
+      nil "create scratch buffer"
+      (interactive)
+      (switch-to-buffer (get-buffer-create "*scratch*"))
+      (text-mode))  
   (add-to-list 'exec-path (expand-file-name "~/.cargo.bin"))
   (set-language-environment "UTF-8")
   (global-set-key (kbd "C-c t") 'display-line-numbers-mode)
