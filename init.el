@@ -337,12 +337,30 @@
 ;;   :ensure t
 ;;   :config (add-hook 'rust-mode-hook 'cargo-minor-mode)
 ;;   )
+(leaf web-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+  )
 
-;; ;; (leaf lsp-mode
-;;   :ensure t
-;;   :init (yas-global-mode)
-;;   :hook (rust-mode . lsp)
-;;   )
+(leaf emmet-mode
+  :ensure t
+  :leaf-defer t
+  :commands (emmet-mode)
+  :hook
+  (web-mode-hook . emmet-mode))
+
+
+(leaf lsp-mode
+  :ensure t
+  :init (yas-global-mode)
+  :config
+  (add-hook 'web-mode-hook #'lsp)
+  )
+
 ;; (leaf setup-straight
 ;;   :config
 ;;   (defvar bootstrap-version)
