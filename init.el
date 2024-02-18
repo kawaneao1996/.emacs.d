@@ -76,6 +76,9 @@
     "T" 'treemacs
     "w" 'save-buffer
     ;; "q" 'save-buffer-kill-terminal
+    "^" (lambda () (interactive)
+          (show-org-buffer)
+          (evil-normal-state))
     ";" 'comment-line
     "x" 'toggle-transparency
     "0" 'delete-window
@@ -199,6 +202,18 @@
            "** %?\nEntered on %U\n %i\n")))
   
   (global-set-key (kbd "C-c C-j") 'org-journal-new-entry)
+  ;; https://www.mhatta.org/wp/2018/08/16/org-mode-101-1/
+  (defun show-org-buffer ()
+    "Show an org-file FILE on the current buffer."
+    (interactive)
+    (let ((file "memo.org"))
+      (if (get-buffer file)
+          (let ((buffer (get-buffer file)))
+            (switch-to-buffer buffer)
+            (message "%s" file))
+        (find-file (concat work-directory file)))
+      )
+    )
   )
 
 ;; org-capture
