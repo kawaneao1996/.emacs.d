@@ -417,7 +417,7 @@
 
 (leaf beacon
   :ensure t
-  :config (beacon-mode 1))
+  :config (beacon-mode 1) (setq beacon-color "green"))
 
 ;; ;; ↑package setting end
 
