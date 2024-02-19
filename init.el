@@ -415,6 +415,10 @@
 ;;     (define-key copilot-mode-map (kbd "<tab>") #'my/copilot-tab))
 ;;   )
 
+(leaf beacon
+  :ensure t
+  :config (beacon-mode 1))
+
 ;; ;; ↑package setting end
 
 (leaf my-utility
