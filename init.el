@@ -353,14 +353,14 @@
   (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+  (add-hook 'web-mode-hook 'emmet-mode)
   )
 
 (leaf emmet-mode
   :ensure t
   :leaf-defer t
   :commands (emmet-mode)
-  :hook
-  (web-mode-hook . emmet-mode))
+  )
 
 
 (leaf lsp-mode
