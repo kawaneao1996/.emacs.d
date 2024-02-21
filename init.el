@@ -16,7 +16,7 @@
     (leaf hydra :ensure t)
     (leaf el-get :ensure t)
     (leaf blackout :ensure t)
-   
+    
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
@@ -35,15 +35,14 @@
   :config   (setq evil-cross-lines t)           ;行の端でhlしたとき前/次の行に移動する
   (setq evil-want-C-i-jump nil)       ;C-iはTABとして使う
   (setq evil-search-module 'isearch)
-  :config (evil-mode 1)
-  :config (evil-set-initial-state 'org-mode 'emacs)
-  :config (setq evil-normal-state-cursor '(box "purple"))
-  :config (setq evil-emacs-state-cursor '(bar "green"))
-  :config (setq evil-insert-state-cursor '(bar "green"))
-  :config   (setq evil-want-fine-undo t)     ;操作を元に戻す単位を細かくする
+  (evil-mode 1)
+  (evil-set-initial-state 'org-mode 'emacs)
+  (setq evil-normal-state-cursor '(box "purple"))
+  (setq evil-emacs-state-cursor '(bar "green"))
+  (setq evil-insert-state-cursor '(bar "green"))
+  (setq evil-want-fine-undo t)     ;操作を元に戻す単位を細かくする
   (setq evil-move-cursor-back nil) ;改行文字の上に移動可能にする(C-x C-e用)
   (setq evil-esc-delay 0)
-  :config
   (defalias 'evil-insert-state 'evil-emacs-state)
   (define-key evil-emacs-state-map (kbd "<escape>") 'evil-normal-state)
 
@@ -303,7 +302,7 @@
   :ensure t
   :custom ((prescient-aggressive-file-save . t))
   :global-minor-mode prescient-persist-mode)
-  
+
 (leaf ivy-prescient
   :doc "prescient.el + Ivy"
   :req "emacs-25.1" "prescient-4.0" "ivy-0.11.0"
@@ -322,7 +321,9 @@
   ;; (setq treemacs-git-mode 'deferred)
   (setq treemacs-git-mode 'simple)
   )
-(leaf neotree :ensure t)
+(leaf neotree
+  :ensure t
+  :config (setq neo-smart-open t))
 
 ;; (leaf avy
 ;;   :ensure t)
