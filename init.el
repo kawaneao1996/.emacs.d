@@ -113,6 +113,8 @@
            (indent-tabs-mode . nil)
            )
   :config
+  ;; shut up, emacs!
+  (setq display-warning-minimum-level :error))
   (defun create-scratch-buffer
       nil "create scratch buffer"
       (interactive)
@@ -488,9 +490,7 @@
  ;; If there is more than one, they won't work right.
  '(auto-revert-interval 0.1)
  '(counsel-find-file-ignore-regexp "\\(?:\\.\\(?:\\.?/\\)\\)")
- '(counsel-yank-pop-separator "
-----------
-")
+ '(counsel-yank-pop-separator "\12----------\12")
  '(custom-enabled-themes '(deeper-blue))
  '(flycheck-emacs-lisp-initialize-packages t)
  '(indent-tabs-mode nil)
