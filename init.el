@@ -81,6 +81,7 @@
     "t" 'neotree-toggle
     "T" 'treemacs
     "w" 'save-buffer
+    "y" 'yas-insert-snippet
     ;; "q" 'save-buffer-kill-terminal
     "^" (lambda () (interactive)
           (show-org-buffer)
@@ -330,7 +331,7 @@
   :ensure t
   :config
   (leaf yasnippet-snippets :ensure t)
-  (yas-reload-all)
+  (yas-global-mode)
   (add-hook 'prog-mode-hook #'yas-minor-mode))
 
 (leaf rustic
