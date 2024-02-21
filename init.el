@@ -115,99 +115,50 @@
   :config
   ;; shut up, emacs!
   (setq display-warning-minimum-level :error))
-(defun create-scratch-buffer
-    nil "create scratch buffer"
+  (defun create-scratch-buffer
+      nil "create scratch buffer"
+      (interactive)
+      (switch-to-buffer (get-buffer-create "*scratch*"))
+      (text-mode))  
+  (add-to-list 'exec-path (expand-file-name "~/.cargo.bin"))
+  (set-language-environment "UTF-8")
+  (global-set-key (kbd "C-c t") 'display-line-numbers-mode)
+  ;; emacs の起動画面を消す
+  ;; https://pcvogel.sarakura.net/2013/06/17/31151
+  (setq inhibit-startup-message t)
+  (setq initial-scratch-message nil)
+  ;;カーソルの点滅を消す
+  (blink-cursor-mode 0)
+  ;;括弧の自動補完
+  (electric-pair-mode 1)
+
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+  (add-hook 'org-mode-hook 'display-line-numbers-mode)
+  ;; *scratch* buffer をテキストモードで開く
+  (setq initial-major-mode 'text-mode)
+  ;; scratch buffer をorg-modeで作成するmy-scratch-buffer
+  ;; https://emacs.stackexchange.com/questions/16492/is-it-possible-to-create-an-org-mode-scratch-buffer
+  ;; lawlistさん作
+  (defun my-scratch-buffer ()
+    "Create a new scratch buffer -- \*hello-world\*"
     (interactive)
-    (switch-to-buffer (get-buffer-create "*scratch*"))
-    (text-mode))  
-(add-to-list 'exec-path (expand-file-name "~/.cargo.bin"))
-(set-language-environment "UTF-8")
-(global-set-key (kbd "C-c t") 'display-line-numbers-mode)
-;; emacs の起動画面を消す
-;; https://pcvogel.sarakura.net/2013/06/17/31151
-(setq inhibit-startup-message t)
-(setq initial-scratch-message nil)
-;;カーソルの点滅を消す
-(blink-cursor-mode 0)
-;;括弧の自動補完
-(electric-pair-mode 1)
-
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'org-mode-hook 'display-line-numbers-mode)
-;; *scratch* buffer をテキストモードで開く
-(setq initial-major-mode 'text-mode)
-;; scratch buffer をorg-modeで作成するmy-scratch-buffer
-;; https://emacs.stackexchange.com/questions/16492/is-it-possible-to-create-an-org-mode-scratch-buffer
-;; lawlistさん作
-(defun my-scratch-buffer ()
-  "Create a new scratch buffer -- \*hello-world\*"
-  (interactive)
-  (let ((n 0)
-        bufname buffer)
-    (catch 'done
-      (while t
-        (setq bufname (concat "*my-scratch-org-mode"
-                              (if (= n 0) "" (int-to-string n))
-                              "*"))
-        (setq n (1+ n))
-        (when (not (get-buffer bufname))
-          (setq buffer (get-buffer-create bufname))
-          (with-current-buffer buffer
-            (org-mode))
-          ;; When called non-interactively, the `t` targets the other window (if it exists).
-          (throw 'done (display-buffer buffer t))) ))))
-;; 警告音もフラッシュも全て無効(警告音が完全に鳴らなくなるので注意)
-(setq ring-bell-function 'ignore)
-
-(leaf tree-sitter
-  :ensure t
-  :config
-  ;; activate tree-sitter on any buffer containing code for which it has a parser available
-  (global-tree-sitter-mode)
-  ;; you can easily see the difference tree-sitter-hl-mode makes for python, ts or tsx
-  ;; by switching on and off
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-
-(leaf tree-sitter-langs
-  :ensure t
-  :after tree-sitter)
-(leaf typescript-mode
-  :after tree-sitter
-  :config
-  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
-  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
-  (define-derived-mode typescriptreact-mode typescript-mode
-    "TypeScript TSX")
-
-  ;; use our derived mode for tsx files
-  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-  ;; by default, typescript-mode is mapped to the treesitter typescript parser
-  ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
-
-(leaf quelpa-leaf
-  :ensure t
-  :config
-  (quelpa
-   '(quelpa-leaf
-     :fetcher git
-     :url "https://github.com/quelpa/quelpa-leaf.git"))
-  (require 'quelpa-leaf)
-  (quelpa-leaf-init))
-;; https://github.com/orzechowskid/tsi.el/
-;; great tree-sitter-based indentation for typescript/tsx, css, json
-(leaf tsi
-  :after tree-sitter
-  :quelpa (tsi :fetcher github :repo "orzechowskid/tsi.el")
-  ;; define autoload definitions which when actually invoked will cause package to be loaded
-  :commands (tsi-typescript-mode tsi-json-mode tsi-css-mode)
-  :init
-  (add-hook 'typescript-mode-hook (lambda () (tsi-typescript-mode 1)))
-  (add-hook 'json-mode-hook (lambda () (tsi-json-mode 1)))
-  (add-hook 'css-mode-hook (lambda () (tsi-css-mode 1)))
-  (add-hook 'scss-mode-hook (lambda () (tsi-scss-mode 1))))
-
-
+    (let ((n 0)
+          bufname buffer)
+      (catch 'done
+        (while t
+          (setq bufname (concat "*my-scratch-org-mode"
+                                (if (= n 0) "" (int-to-string n))
+                                "*"))
+          (setq n (1+ n))
+          (when (not (get-buffer bufname))
+            (setq buffer (get-buffer-create bufname))
+            (with-current-buffer buffer
+              (org-mode))
+            ;; When called non-interactively, the `t` targets the other window (if it exists).
+            (throw 'done (display-buffer buffer t))) ))))
+  ;; 警告音もフラッシュも全て無効(警告音が完全に鳴らなくなるので注意)
+  (setq ring-bell-function 'ignore)
+  )
 (leaf org-journal
   :ensure t
   :config
@@ -541,7 +492,7 @@
  '(counsel-find-file-ignore-regexp "\\(?:\\.\\(?:\\.?/\\)\\)")
  '(counsel-yank-pop-separator "\12----------\12")
  '(custom-enabled-themes '(deeper-blue))
- '(flycheck-emacs-lisp-initialize-packages t t)
+ '(flycheck-emacs-lisp-initialize-packages t)
  '(indent-tabs-mode nil)
  '(ivy-initial-inputs-alist nil)
  '(ivy-prescient-retain-classic-highlighting t)
