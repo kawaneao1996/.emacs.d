@@ -73,7 +73,8 @@
     "j" 'dired-jump
     "k" 'kill-buffer
     "m" 'magit-status
-    "q" 'kill-buffer-and-window
+    ;; "q" 'kill-buffer-and-window
+    "Q" (lambda () (interactive) (save-buffers-kill-emacs))
     "r" 'helm-recentf
     "s" 'eshell
     "S" 'shell
@@ -193,12 +194,14 @@
      :fetcher git
      :url "https://github.com/quelpa/quelpa-leaf.git"))
   (require 'quelpa-leaf)
-  (quelpa-leaf-init))
+  (quelpa-leaf-init)
+  )
 ;; https://github.com/orzechowskid/tsi.el/
 ;; great tree-sitter-based indentation for typescript/tsx, css, json
 (leaf tsi
   :after tree-sitter
   :quelpa (tsi :fetcher github :repo "orzechowskid/tsi.el")
+  :quelpa (:upgrade nil)
   ;; define autoload definitions which when actually invoked will cause package to be loaded
   :commands (tsi-typescript-mode tsi-json-mode tsi-css-mode)
   :init
