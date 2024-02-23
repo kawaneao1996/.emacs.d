@@ -45,7 +45,8 @@
   (setq evil-esc-delay 0)
   (defalias 'evil-insert-state 'evil-emacs-state)
   (define-key evil-emacs-state-map (kbd "<escape>") 'evil-normal-state)
-
+  (add-hook 'evil-emacs-state-entry-hook 'skk-mode)
+  (add-hook 'evil-emacs-state-exit-hook 'skk-mode)
   )
 (leaf evil-matchit
   :ensure t
