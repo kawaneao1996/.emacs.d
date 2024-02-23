@@ -98,6 +98,8 @@
 
 (leaf magit
   :ensure t
+  :config
+  (add-hook 'magit-mode-hook (lambda () (skk-mode)))
   )
 (leaf which-key
   :ensure t
