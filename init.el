@@ -37,10 +37,10 @@
   (setq evil-search-module 'isearch)
   (evil-mode 1)
   (evil-set-initial-state 'org-mode 'emacs)
-  (setq evil-normal-state-cursor '(box "purple"))
-  (setq evil-emacs-state-cursor '(bar "green"))
-  (setq evil-insert-state-cursor '(bar "green"))
-  (setq evil-want-fine-undo t)     ;操作を元に戻す単位を細かくする
+  ;; (setq evil-normal-state-cursor '(box "purple"))
+  ;; (setq evil-emacs-state-cursor '(bar "green"))
+  ;; (setq evil-insert-state-cursor '(bar "green"))
+  ;; (setq evil-want-fine-undo t)     ;操作を元に戻す単位を細かくする
   (setq evil-move-cursor-back nil) ;改行文字の上に移動可能にする(C-x C-e用)
   (setq evil-esc-delay 0)
   (defalias 'evil-insert-state 'evil-emacs-state)
@@ -65,15 +65,15 @@
     "b" 'counsel-ibuffer
     "B" 'byte-compile-file
     "C" (lambda() (interactive)(find-file "~/.emacs.d/init.el"))
-    "d" 'kill-this-buffer
+    "d" 'dired-jump
     ;; "f" 'projectile-find-file
     "f" 'counsel-find-file
     "g" 'magit-status
     "h" 'lsp-describe-thing-at-point
-    "j" 'dired-jump
+    "j" 'skk-mode
     "k" 'kill-buffer
     "m" 'magit-status
-    ;; "q" 'kill-buffer-and-window
+    "q" 'kill-buffer-and-window
     "Q" (lambda () (interactive) (save-buffers-kill-emacs))
     "r" 'helm-recentf
     "s" 'eshell
@@ -115,6 +115,7 @@
            )
   :config
   ;; shut up, emacs!
+  ;; (setq default-input-method "japanese-skk")
   (setq display-warning-minimum-level :error))
 (defun create-scratch-buffer
     nil "create scratch buffer"
@@ -474,6 +475,9 @@
 (leaf beacon
   :ensure t
   :config (beacon-mode 1) (setq beacon-color "green"))
+
+(leaf ddskk
+  :ensure t)
 
 ;; ;; ↑package setting end
 
