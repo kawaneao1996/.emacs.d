@@ -210,8 +210,11 @@
 
               ("P" "Project" entry (file+headline memofile "Project")
                "** %?\nEntered on %U\n %i\n")))
-      ))
-  ;; </leaf-install-code>
+      )
+    (leaf doom-themes :ensure t)
+    (leaf zenburn-theme :ensure t)
+    ;; </leaf-install-code>
+    )
 
   ;; Now you can use leaf!
   (leaf leaf-tree :ensure t)
@@ -558,8 +561,10 @@
  '(auto-revert-interval 0.1)
  '(counsel-find-file-ignore-regexp "\\(?:\\.\\(?:\\.?/\\)\\)")
  '(counsel-yank-pop-separator "\12----------\12")
- '(custom-enabled-themes '(deeper-blue))
- '(flycheck-emacs-lisp-initialize-packages t t)
+ '(custom-enabled-themes '(zenburn))
+ '(custom-safe-themes
+   '("18cf5d20a45ea1dff2e2ffd6fbcd15082f9aa9705011a3929e77129a971d1cb3" "81f53ee9ddd3f8559f94c127c9327d578e264c574cda7c6d9daddaec226f87bb" "a8354a5bb676d49a45ddf1289a53034cb34fda9193f412f314bdb91c82326ee9" "8d3ef5ff6273f2a552152c7febc40eabca26bae05bd12bc85062e2dc224cde9a" "2721b06afaf1769ef63f942bf3e977f208f517b187f2526f0e57c1bd4a000350" "7ec8fd456c0c117c99e3a3b16aaf09ed3fb91879f6601b1ea0eeaee9c6def5d9" "dfb1c8b5bfa040b042b4ef660d0aab48ef2e89ee719a1f24a4629a0c5ed769e8" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" default))
+ '(flycheck-emacs-lisp-initialize-packages t)
  '(indent-tabs-mode nil)
  '(ivy-initial-inputs-alist nil)
  '(ivy-prescient-retain-classic-highlighting t)
