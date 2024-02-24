@@ -177,6 +177,7 @@
   :ensure t
   :after tree-sitter)
 (leaf typescript-mode
+  :ensure t
   :after tree-sitter
   :config
   ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
