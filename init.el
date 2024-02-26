@@ -20,13 +20,6 @@
       :ensure t
       :config (beacon-mode 1) (setq beacon-color "green"))
 
-    ;; (leaf skk
-    ;;   :ensure ddskk
-    ;;   :custom ((default-input-method . "japanese-skk"))
-    ;;   :config
-    ;;   (leaf ddskk-posframe
-    ;;     :ensure t
-    ;;     :global-minor-mode t))
 
     
     :config
@@ -49,9 +42,18 @@
       (setq evil-esc-delay 0)
       (defalias 'evil-insert-state 'evil-emacs-state)
       (define-key evil-emacs-state-map (kbd "<escape>") 'evil-normal-state)
-      (add-hook 'evil-emacs-state-entry-hook 'skk-mode)
-      (add-hook 'evil-emacs-state-exit-hook 'skk-mode)
       )
+    ;; (leaf skk
+    ;;   :ensure ddskk
+    ;;   :custom ((default-input-method . "japanese-skk"))
+    ;;   :config
+    ;;   (leaf ddskk-posframe
+    ;;     :ensure t
+    ;;     :global-minor-mode t))
+    ;; (leaf evil-skk
+    ;; (add-hook 'evil-emacs-state-entry-hook 'skk-mode)
+    ;; (add-hook 'evil-emacs-state-exit-hook 'skk-mode)
+    ;; )
     (leaf evil-matchit
       :ensure t
       :config (global-evil-matchit-mode 1))
