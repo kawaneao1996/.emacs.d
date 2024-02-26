@@ -20,13 +20,13 @@
       :ensure t
       :config (beacon-mode 1) (setq beacon-color "green"))
 
-    (leaf skk
-      :ensure ddskk
-      :custom ((default-input-method . "japanese-skk"))
-      :config
-      (leaf ddskk-posframe
-        :ensure t
-        :global-minor-mode t))
+    ;; (leaf skk
+    ;;   :ensure ddskk
+    ;;   :custom ((default-input-method . "japanese-skk"))
+    ;;   :config
+    ;;   (leaf ddskk-posframe
+    ;;     :ensure t
+    ;;     :global-minor-mode t))
 
     
     :config
