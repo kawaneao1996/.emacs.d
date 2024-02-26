@@ -50,9 +50,10 @@
     ;;   (leaf ddskk-posframe
     ;;     :ensure t
     ;;     :global-minor-mode t))
-    ;; (leaf evil-skk
+    ;; (leaf skk-config
     ;; (add-hook 'evil-emacs-state-entry-hook 'skk-mode)
     ;; (add-hook 'evil-emacs-state-exit-hook 'skk-mode)
+    ;; (add-hook 'magit-mode-hook (lambda () (skk-mode)))
     ;; )
     (leaf evil-matchit
       :ensure t
@@ -77,7 +78,7 @@
         "f" 'counsel-find-file
         "g" 'magit-status
         "h" 'lsp-describe-thing-at-point
-        "j" 'skk-mode
+        ;; "j" 'skk-mode
         "k" 'kill-buffer
         "m" 'magit-status
         "q" 'kill-buffer-and-window
@@ -105,7 +106,6 @@
     (leaf magit
       :ensure t
       :config
-      (add-hook 'magit-mode-hook (lambda () (skk-mode)))
       )
     (leaf which-key
       :ensure t
