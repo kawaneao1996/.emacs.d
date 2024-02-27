@@ -218,10 +218,14 @@
     (leaf doom-themes :ensure t)
     (leaf zenburn-theme :ensure t)
     (leaf modus-themes :ensure t)
-    ;; (leaf highlight-indent-guides :ensure t
-    ;;   :config
-    ;;   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-    ;;   )
+    (leaf highlight-indent-guides :ensure t
+      :config
+      (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+      (setq highlight-indent-guides-method 'character)
+      (setq highlight-indent-guides-responsive "stack")
+      ;; (set-face-foreground 'highlight-indent-guides-top-character-face "DarkOliveGreen")
+      ;; (set-face-foreground 'highlight-indent-guides-character-face "DarkSlateGray")
+      )
     ;; </leaf-install-code>
     )
 
