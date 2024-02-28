@@ -80,6 +80,11 @@
         "h" 'lsp-describe-thing-at-point
         ;; "j" 'skk-mode
         "k" 'kill-buffer
+        "l" '(lambda() (interactive)
+               (set-face-foreground 'highlight-indent-guides-top-character-face "DarkOliveGreen")
+               (set-face-foreground 'highlight-indent-guides-character-face "DarkSlateGray")
+               )
+        "L" 'toggle-truncate-lines
         "m" 'magit-status
         "q" 'kill-buffer-and-window
         "Q" (lambda () (interactive) (save-buffers-kill-emacs))
@@ -226,6 +231,7 @@
       ;; (set-face-foreground 'highlight-indent-guides-top-character-face "DarkOliveGreen")
       ;; (set-face-foreground 'highlight-indent-guides-character-face "DarkSlateGray")
       )
+    (leaf svg-clock :ensure t)
     ;; </leaf-install-code>
     )
 
