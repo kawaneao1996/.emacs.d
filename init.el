@@ -72,6 +72,7 @@
         ;; "a" 'avy-goto-word-0
         "b" 'counsel-ibuffer
         "B" 'byte-compile-file
+        "c" #'svg-clock
         "C" (lambda() (interactive)(find-file "~/.emacs.d/init.el"))
         "d" 'dired-jump
         ;; "f" 'projectile-find-file
