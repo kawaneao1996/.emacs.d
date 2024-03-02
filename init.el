@@ -233,6 +233,15 @@
       ;; (set-face-foreground 'highlight-indent-guides-character-face "DarkSlateGray")
       )
     (leaf svg-clock :ensure t)
+    (leaf markdown-mode :ensure t
+      :mode ("\\.md\\'" . gfm-mode)
+      :config
+      (setopt markdown-command '("pandoc" "--from=markdown" "--to=html5"))
+      (setopt markdown-fontify-code-blocks-natively t)
+      (setopt markdown-header-scaling t)
+      (setopt markdown-indent-on-enter 'indent-and-new-item)
+      (leaf-key "<S-tab>" #'markdown-shifttab markdown-mode-map))
+
     ;; </leaf-install-code>
     )
 
