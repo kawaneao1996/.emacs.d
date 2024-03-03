@@ -33,7 +33,7 @@
       (setq evil-want-C-i-jump nil)       ;C-iはTABとして使う
       (setq evil-search-module 'isearch)
       (evil-mode 1)
-      (evil-set-initial-state 'org-mode 'emacs)
+      ;; (evil-set-initial-state 'org-mode 'emacs)
       ;; (setq evil-normal-state-cursor '(box "purple"))
       ;; (setq evil-emacs-state-cursor '(bar "green"))
       ;; (setq evil-insert-state-cursor '(bar "green"))
@@ -95,6 +95,7 @@
         "t" 'neotree-toggle
         "T" 'treemacs
         "w" 'save-buffer
+        "W" 'resize-frame
         "y" 'yas-insert-snippet
         ;; "q" 'save-buffer-kill-terminal
         "^" (lambda () (interactive)
@@ -240,8 +241,66 @@
       (setopt markdown-fontify-code-blocks-natively t)
       (setopt markdown-header-scaling t)
       (setopt markdown-indent-on-enter 'indent-and-new-item)
-      (leaf-key "<S-tab>" #'markdown-shifttab markdown-mode-map))
+      (leaf-key "<S-tab>" #'markdown-shifttab 'markdown-mode-map))
+    (leaf resize-frame
+      :config
+      ;;; resize-frame.el --- A minor mode to resize frames easily.  -*- lexical-binding: t; -*-
 
+      ;; Copyright (C) 2014  kuanyui
+
+      ;; Author: kuanyui <azazabc123@gmail.com>
+      ;; Keywords: frames, tools, convenience
+      ;; License: WTFPL 1.0
+
+        ;;; Commentary:
+
+      ;; Press "ESC `" and use arrow-keys to adjust frames. press any key to done.
+
+        ;;; Code:
+
+      (defvar resize-frame-map
+        (let ((map (make-keymap)))
+          (define-key map (kbd "<up>") 'enlarge-window)
+          (define-key map (kbd "<down>") 'shrink-window)
+          (define-key map (kbd "<right>") 'enlarge-window-horizontally)
+          (define-key map (kbd "<left>") 'shrink-window-horizontally)
+          (set-char-table-range (nth 1 map) t 'resize-frame-done)
+          (define-key map (kbd "C-p") 'enlarge-window)
+          (define-key map (kbd "C-n") 'shrink-window)
+          (define-key map (kbd "C-f") 'enlarge-window-horizontally)
+          (define-key map (kbd "C-b") 'shrink-window-horizontally)
+          map))
+
+      (define-minor-mode resize-frame
+        "A simple minor mode to resize-frame.
+        C-c C-c to apply."
+        ;; The initial value.
+        :init-value nil
+        ;; The indicator for the mode line.
+        :lighter " ResizeFrame"
+        ;; The minor mode bindings.
+        :keymap resize-frame-map
+        :global t
+        (if (<= (length (window-list)) 1)
+            (progn (setq resize-frame nil)
+                   (message "Only root frame exists, abort."))
+          (progn (evil-emacs-state 1)
+                 (message "Use arrow-keys to adjust frames."))
+          )
+        )
+
+      (defun resize-frame-done ()
+        (interactive)
+        (evil-emacs-state -1)
+        (setq resize-frame nil)
+        (message "Done."))
+
+      ;; (global-set-key (kbd "ESC `") 'resize-frame)
+
+      (provide 'resize-frame)
+        ;;; resize-frame.el ends here
+      )
+    (leaf windresize :ensure t)
     ;; </leaf-install-code>
     )
 
