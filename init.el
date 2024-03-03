@@ -42,7 +42,15 @@
       (setq evil-esc-delay 0)
       (defalias 'evil-insert-state 'evil-emacs-state)
       (define-key evil-emacs-state-map (kbd "<escape>") 'evil-normal-state)
+      ;; evil-collection
+      (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+      (setq evil-want-keybinding nil)
       )
+    (leaf evil-collection
+      :after evil
+      :ensure t
+      :config
+      (evil-collection-init '(calendar dired eshell)))
     ;; (leaf skk
     ;;   :ensure ddskk
     ;;   :custom ((default-input-method . "japanese-skk"))
@@ -72,7 +80,8 @@
         ;; "a" 'avy-goto-word-0
         "b" 'counsel-ibuffer
         "B" 'byte-compile-file
-        "c" #'svg-clock
+        "c c" #'svg-clock
+        "c C" 'calendar
         "C" (lambda() (interactive)(find-file "~/.emacs.d/init.el"))
         "d" 'dired-jump
         ;; "f" 'projectile-find-file
