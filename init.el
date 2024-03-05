@@ -88,12 +88,13 @@
         "f" 'counsel-find-file
         "g" 'magit-status
         "h" 'lsp-describe-thing-at-point
+        "i" 'imenu-list
         ;; "j" 'skk-mode
         "k" 'kill-buffer
-        "l" '(lambda() (interactive)
-               (set-face-foreground 'highlight-indent-guides-top-character-face "DarkOliveGreen")
-               (set-face-foreground 'highlight-indent-guides-character-face "DarkSlateGray")
-               )
+        ;; "l" '(lambda() (interactive)
+        ;;        (set-face-foreground 'highlight-indent-guides-top-character-face "DarkOliveGreen")
+        ;;        (set-face-foreground 'highlight-indent-guides-character-face "DarkSlateGray")
+        ;;        )
         "L" 'toggle-truncate-lines
         "m" 'magit-status
         "q" 'kill-buffer-and-window
@@ -234,14 +235,14 @@
     (leaf doom-themes :ensure t)
     (leaf zenburn-theme :ensure t)
     (leaf modus-themes :ensure t)
-    (leaf highlight-indent-guides :ensure t
-      :config
-      (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-      (setq highlight-indent-guides-method 'character)
-      (setq highlight-indent-guides-responsive "stack")
-      ;; (set-face-foreground 'highlight-indent-guides-top-character-face "DarkOliveGreen")
-      ;; (set-face-foreground 'highlight-indent-guides-character-face "DarkSlateGray")
-      )
+    ;; (leaf highlight-indent-guides :ensure t
+    ;;   :config
+    ;;   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+    ;;   (setq highlight-indent-guides-method 'character)
+    ;;   (setq highlight-indent-guides-responsive "stack")
+    ;;   ;; (set-face-foreground 'highlight-indent-guides-top-character-face "DarkOliveGreen")
+    ;;   ;; (set-face-foreground 'highlight-indent-guides-character-face "DarkSlateGray")
+    ;;   )
     (leaf svg-clock :ensure t)
     (leaf markdown-mode :ensure t
       :mode ("\\.md\\'" . gfm-mode)
