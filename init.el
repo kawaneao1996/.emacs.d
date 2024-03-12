@@ -317,6 +317,46 @@
         ;;; resize-frame.el ends here
       )
     (leaf windresize :ensure t)
+    ;; https://qiita.com/nobuyuki86/items/7c65456ad07b555dd67d
+    (leaf corfu
+      :ensure t
+      :bind ((corfu-map
+              ("TAB" . corfu-insert)
+              ("<tab>" . corfu-insert)
+              ("RET")
+              ("<return>")))
+      :config
+      (let ((custom--inhibit-theme-enable nil))
+        (unless (memq 'use-package custom-known-themes)
+          (deftheme use-package)
+          (enable-theme 'use-package)
+          (setq custom-enabled-themes (remq 'use-package custom-enabled-themes)))
+        (custom-theme-set-variables 'use-package
+                                    '(corfu-auto t nil nil "Customized with use-package corfu")
+                                    '(corfu-auto-delay 0 nil nil "Customized with use-package corfu")
+                                    '(corfu-auto-prefix 1 nil nil "Customized with use-package corfu")
+                                    '(corfu-cycle t nil nil "Customized with use-package corfu")
+                                    '(corfu-on-exact-match nil nil nil "Customized with use-package corfu")
+                                    '(tab-always-indent 'complete nil nil "Customized with use-package corfu")))
+      (global-corfu-mode 1)
+      (with-eval-after-load 'corfu
+        (defun my/corfu-remap-tab-command nil
+          (global-set-key
+           [remap c-indent-line-or-region]
+           #'indent-for-tab-command))
+
+        (add-hook 'java-mode-hook #'my/corfu-remap-tab-command)
+        (defun corfu-enable-always-in-minibuffer nil
+          "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+          (unless (or
+                   (bound-and-true-p mct--active)
+                   (bound-and-true-p vertico--input))
+            (setq-local corfu-echo-delay nil corfu-popupinfo-delay nil)
+            (corfu-mode 1)))
+
+        (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
+        (with-eval-after-load 'lsp-mode
+          (setq lsp-completion-provider :none))))
     ;; </leaf-install-code>
     )
 
