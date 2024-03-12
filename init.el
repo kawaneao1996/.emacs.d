@@ -357,6 +357,66 @@
         (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
         (with-eval-after-load 'lsp-mode
           (setq lsp-completion-provider :none))))
+    (leaf tabnine
+      :ensure t
+      :commands tabnine-kill-process
+      :bind ((tabnine-completion-map
+              ("TAB")
+              ("<tab>")))
+      :hook (prog-mode-hook text-mode-hook
+                            (kill-emacs-hook . tabnine-kill-process))
+      :config
+      (tabnine-start-process)
+      (global-tabnine-mode 1))
+    (leaf cape
+      :ensure t
+      :commands my/set-super-capf
+      :hook ((prog-mode-hook . my/set-super-capf)
+             (text-mode-hook . my/set-super-capf)
+             (conf-mode-hook . my/set-super-capf)
+             (eglot-managed-mode-hook . my/set-super-capf)
+             (lsp-completion-mode-hook . my/set-super-capf))
+      :config
+      (with-eval-after-load 'cape
+        (setq cape-dabbrev-check-other-buffers nil)
+        (defun my/set-super-capf (&optional arg)
+          (setq-local completion-at-point-functions
+                      (list
+                       (cape-capf-noninterruptible
+                        (cape-capf-buster
+                         (cape-capf-properties
+                          (cape-capf-super
+                           (if arg
+                               arg
+                             (car completion-at-point-functions))
+                           #'tempel-complete #'tabnine-completion-at-point #'cape-dabbrev #'cape-file)
+                          :sort t :exclusive 'no))))))
+
+        (add-to-list 'completion-at-point-functions #'tempel-complete)
+        (add-to-list 'completion-at-point-functions #'tabnine-completion-at-point)
+        (add-to-list 'completion-at-point-functions #'cape-file t)
+        (add-to-list 'completion-at-point-functions #'cape-tex t)
+        (add-to-list 'completion-at-point-functions #'cape-dabbrev t)
+        (add-to-list 'completion-at-point-functions #'cape-keyword t)))
+    (leaf kind-icon
+      :ensure t
+      :after corfu
+      :init
+      (let ((custom--inhibit-theme-enable nil))
+        (unless (memq 'use-package custom-known-themes)
+          (deftheme use-package)
+          (enable-theme 'use-package)
+          (setq custom-enabled-themes (remq 'use-package custom-enabled-themes)))
+        (custom-theme-set-variables 'use-package
+                                    '(kind-icon-default-face 'corfu-default nil nil "Customized with use-package kind-icon")))
+      :require t
+      :config
+      (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+    (leaf corfu-popupinfo
+      :ensure t
+      :after corfu
+      :hook (corfu-mode-hook))
+    
     ;; </leaf-install-code>
     )
 
