@@ -20,8 +20,6 @@
       :ensure t
       :config (beacon-mode 1) (setq beacon-color "green"))
 
-
-    
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)
@@ -33,7 +31,8 @@
       (setq evil-want-C-i-jump nil)       ;C-iはTABとして使う
       (setq evil-search-module 'isearch)
       (evil-mode 1)
-      ;; (evil-set-initial-state 'org-mode 'emacs)
+      (evil-set-initial-state 'prog-mode 'normal)
+      (setq evil-default-state 'insert)
       ;; (setq evil-normal-state-cursor '(box "purple"))
       ;; (setq evil-emacs-state-cursor '(bar "green"))
       ;; (setq evil-insert-state-cursor '(bar "green"))
@@ -317,105 +316,6 @@
         ;;; resize-frame.el ends here
       )
     (leaf windresize :ensure t)
-    ;; https://qiita.com/nobuyuki86/items/7c65456ad07b555dd67d
-    (leaf corfu
-      :ensure t
-      :bind ((corfu-map
-              ("TAB" . corfu-insert)
-              ("<tab>" . corfu-insert)
-              ("RET")
-              ("<return>")))
-      :config
-      (let ((custom--inhibit-theme-enable nil))
-        (unless (memq 'use-package custom-known-themes)
-          (deftheme use-package)
-          (enable-theme 'use-package)
-          (setq custom-enabled-themes (remq 'use-package custom-enabled-themes)))
-        (custom-theme-set-variables 'use-package
-                                    '(corfu-auto t nil nil "Customized with use-package corfu")
-                                    '(corfu-auto-delay 0 nil nil "Customized with use-package corfu")
-                                    '(corfu-auto-prefix 1 nil nil "Customized with use-package corfu")
-                                    '(corfu-cycle t nil nil "Customized with use-package corfu")
-                                    '(corfu-on-exact-match nil nil nil "Customized with use-package corfu")
-                                    '(tab-always-indent 'complete nil nil "Customized with use-package corfu")))
-      (global-corfu-mode 1)
-      (with-eval-after-load 'corfu
-        (defun my/corfu-remap-tab-command nil
-          (global-set-key
-           [remap c-indent-line-or-region]
-           #'indent-for-tab-command))
-
-        (add-hook 'java-mode-hook #'my/corfu-remap-tab-command)
-        (defun corfu-enable-always-in-minibuffer nil
-          "Enable Corfu in the minibuffer if Vertico/Mct are not active."
-          (unless (or
-                   (bound-and-true-p mct--active)
-                   (bound-and-true-p vertico--input))
-            (setq-local corfu-echo-delay nil corfu-popupinfo-delay nil)
-            (corfu-mode 1)))
-
-        (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
-        (with-eval-after-load 'lsp-mode
-          (setq lsp-completion-provider :none))))
-    (leaf tabnine
-      :ensure t
-      :commands tabnine-kill-process
-      :bind ((tabnine-completion-map
-              ("TAB")
-              ("<tab>")))
-      :hook (prog-mode-hook text-mode-hook
-                            (kill-emacs-hook . tabnine-kill-process))
-      :config
-      (tabnine-start-process)
-      (global-tabnine-mode 1))
-    (leaf cape
-      :ensure t
-      :commands my/set-super-capf
-      :hook ((prog-mode-hook . my/set-super-capf)
-             (text-mode-hook . my/set-super-capf)
-             (conf-mode-hook . my/set-super-capf)
-             (eglot-managed-mode-hook . my/set-super-capf)
-             (lsp-completion-mode-hook . my/set-super-capf))
-      :config
-      (with-eval-after-load 'cape
-        (setq cape-dabbrev-check-other-buffers nil)
-        (defun my/set-super-capf (&optional arg)
-          (setq-local completion-at-point-functions
-                      (list
-                       (cape-capf-noninterruptible
-                        (cape-capf-buster
-                         (cape-capf-properties
-                          (cape-capf-super
-                           (if arg
-                               arg
-                             (car completion-at-point-functions))
-                           #'tempel-complete #'tabnine-completion-at-point #'cape-dabbrev #'cape-file)
-                          :sort t :exclusive 'no))))))
-
-        (add-to-list 'completion-at-point-functions #'tempel-complete)
-        (add-to-list 'completion-at-point-functions #'tabnine-completion-at-point)
-        (add-to-list 'completion-at-point-functions #'cape-file t)
-        (add-to-list 'completion-at-point-functions #'cape-tex t)
-        (add-to-list 'completion-at-point-functions #'cape-dabbrev t)
-        (add-to-list 'completion-at-point-functions #'cape-keyword t)))
-    (leaf kind-icon
-      :ensure t
-      :after corfu
-      :init
-      (let ((custom--inhibit-theme-enable nil))
-        (unless (memq 'use-package custom-known-themes)
-          (deftheme use-package)
-          (enable-theme 'use-package)
-          (setq custom-enabled-themes (remq 'use-package custom-enabled-themes)))
-        (custom-theme-set-variables 'use-package
-                                    '(kind-icon-default-face 'corfu-default nil nil "Customized with use-package kind-icon")))
-      :require t
-      :config
-      (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-    (leaf corfu-popupinfo
-      :ensure t
-      :after corfu
-      :hook (corfu-mode-hook))
     
     ;; </leaf-install-code>
     )
@@ -722,17 +622,17 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auto-revert-interval 0.1)
+ '(blink-cursor-mode nil)
  '(counsel-find-file-ignore-regexp "\\(?:\\.\\(?:\\.?/\\)\\)")
  '(counsel-yank-pop-separator "\12----------\12")
- '(custom-enabled-themes '(doom-ayu-dark))
+ '(custom-enabled-themes '(doom-horizon))
  '(custom-safe-themes
-   '("02d422e5b99f54bd4516d4157060b874d14552fe613ea7047c4a5cfa1288cf4f" "4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d" "6e33d3dd48bc8ed38fd501e84067d3c74dfabbfc6d345a92e24f39473096da3f" "ffafb0e9f63935183713b204c11d22225008559fa62133a69848835f4f4a758c" "77fff78cc13a2ff41ad0a8ba2f09e8efd3c7e16be20725606c095f9a19c24d3d" "9013233028d9798f901e5e8efb31841c24c12444d3b6e92580080505d56fd392" "3fe1ebb870cc8a28e69763dde7b08c0f6b7e71cc310ffc3394622e5df6e4f0da" "f5f80dd6588e59cfc3ce2f11568ff8296717a938edd448a947f9823a4e282b66" "9d29a302302cce971d988eb51bd17c1d2be6cd68305710446f658958c0640f68" "b5fd9c7429d52190235f2383e47d340d7ff769f141cd8f9e7a4629a81abc6b19" "aec7b55f2a13307a55517fdf08438863d694550565dee23181d2ebd973ebd6b8" "c0fe7e641d584b8d38e4d1b91c916530022d51e80f301c4d2387da67cfe7cef8" "6b374f3c5f7bd457399af65bae738671205f4dbc54299817b8a94599dab386f6" "6e584e8baa6fce967dcaf6ca6b3b19c924b30d634c384e599956c8c73582a0d9" "56044c5a9cc45b6ec45c0eb28df100d3f0a576f18eef33ff8ff5d32bac2d9700" "4b6cc3b60871e2f4f9a026a5c86df27905fb1b0e96277ff18a76a39ca53b82e1" "e4a702e262c3e3501dfe25091621fe12cd63c7845221687e36a79e17cf3a67e0" "00cec71d41047ebabeb310a325c365d5bc4b7fab0a681a2a108d32fb161b4006" "34cf3305b35e3a8132a0b1bdf2c67623bc2cb05b125f8d7d26bd51fd16d547ec" "be84a2e5c70f991051d4aaf0f049fa11c172e5d784727e0b525565bb1533ec78" "8c7e832be864674c220f9a9361c851917a93f921fedb7717b1b5ece47690c098" "d6b934330450d9de1112cbb7617eaf929244d192c4ffb1b9e6b63ad574784aad" "ee29cabce91f27eb1f9540ceb2bb69b4c509cd5d3bb3e6d8ad3a4ab799ebf8f7" "2628939b8881388a9251b1bb71bc9dd7c6cffd5252104f9ef236ddfd8dbbf74a" "8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370" "e2d32717818adc2d29062fc147bd263b6cd65fa6d02a0400045aec75acf20657" "a5ee4566c9ff5eed763681b0845fa3a164bc54561d216dc3a762f41f559c181f" "5bafdfa3e21f921abf9b9fd77e1e0ce032e62e3a6f8f13ec8ce7945727c654e9" "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca" "faf956fa69deb44a905446d6f2df4ea123ce99fcfabb261338e7c73a1c3b2c27" "da75eceab6bea9298e04ce5b4b07349f8c02da305734f7c0c8c6af7b5eaa9738" "c1d5759fcb18b20fd95357dcd63ff90780283b14023422765d531330a3d3cec2" "4ade6b630ba8cbab10703b27fd05bb43aaf8a3e5ba8c2dc1ea4a2de5f8d45882" "8b148cf8154d34917dfc794b5d0fe65f21e9155977a36a5985f89c09a9669aa0" "f4d1b183465f2d29b7a2e9dbe87ccc20598e79738e5d29fc52ec8fb8c576fcfd" "691d671429fa6c6d73098fc6ff05d4a14a323ea0a18787daeb93fde0e48ab18b" "2b501400e19b1dd09d8b3708cefcb5227fda580754051a24e8abf3aff0601f87" "88f7ee5594021c60a4a6a1c275614103de8c1435d6d08cc58882f920e0cec65e" "9d5124bef86c2348d7d4774ca384ae7b6027ff7f6eb3c401378e298ce605f83a" "32f22d075269daabc5e661299ca9a08716aa8cda7e85310b9625c434041916af" "dccf4a8f1aaf5f24d2ab63af1aa75fd9d535c83377f8e26380162e888be0c6a9" "014cb63097fc7dbda3edf53eb09802237961cbb4c9e9abd705f23b86511b0a69" "18cf5d20a45ea1dff2e2ffd6fbcd15082f9aa9705011a3929e77129a971d1cb3" "81f53ee9ddd3f8559f94c127c9327d578e264c574cda7c6d9daddaec226f87bb" "a8354a5bb676d49a45ddf1289a53034cb34fda9193f412f314bdb91c82326ee9" "8d3ef5ff6273f2a552152c7febc40eabca26bae05bd12bc85062e2dc224cde9a" "2721b06afaf1769ef63f942bf3e977f208f517b187f2526f0e57c1bd4a000350" "7ec8fd456c0c117c99e3a3b16aaf09ed3fb91879f6601b1ea0eeaee9c6def5d9" "dfb1c8b5bfa040b042b4ef660d0aab48ef2e89ee719a1f24a4629a0c5ed769e8" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" default))
+   '("4990532659bb6a285fee01ede3dfa1b1bdf302c5c3c8de9fad9b6bc63a9252f7" "02d422e5b99f54bd4516d4157060b874d14552fe613ea7047c4a5cfa1288cf4f" "4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d" "6e33d3dd48bc8ed38fd501e84067d3c74dfabbfc6d345a92e24f39473096da3f" "ffafb0e9f63935183713b204c11d22225008559fa62133a69848835f4f4a758c" "77fff78cc13a2ff41ad0a8ba2f09e8efd3c7e16be20725606c095f9a19c24d3d" "9013233028d9798f901e5e8efb31841c24c12444d3b6e92580080505d56fd392" "3fe1ebb870cc8a28e69763dde7b08c0f6b7e71cc310ffc3394622e5df6e4f0da" "f5f80dd6588e59cfc3ce2f11568ff8296717a938edd448a947f9823a4e282b66" "9d29a302302cce971d988eb51bd17c1d2be6cd68305710446f658958c0640f68" "b5fd9c7429d52190235f2383e47d340d7ff769f141cd8f9e7a4629a81abc6b19" "aec7b55f2a13307a55517fdf08438863d694550565dee23181d2ebd973ebd6b8" "c0fe7e641d584b8d38e4d1b91c916530022d51e80f301c4d2387da67cfe7cef8" "6b374f3c5f7bd457399af65bae738671205f4dbc54299817b8a94599dab386f6" "6e584e8baa6fce967dcaf6ca6b3b19c924b30d634c384e599956c8c73582a0d9" "56044c5a9cc45b6ec45c0eb28df100d3f0a576f18eef33ff8ff5d32bac2d9700" "4b6cc3b60871e2f4f9a026a5c86df27905fb1b0e96277ff18a76a39ca53b82e1" "e4a702e262c3e3501dfe25091621fe12cd63c7845221687e36a79e17cf3a67e0" "00cec71d41047ebabeb310a325c365d5bc4b7fab0a681a2a108d32fb161b4006" "34cf3305b35e3a8132a0b1bdf2c67623bc2cb05b125f8d7d26bd51fd16d547ec" "be84a2e5c70f991051d4aaf0f049fa11c172e5d784727e0b525565bb1533ec78" "8c7e832be864674c220f9a9361c851917a93f921fedb7717b1b5ece47690c098" "d6b934330450d9de1112cbb7617eaf929244d192c4ffb1b9e6b63ad574784aad" "ee29cabce91f27eb1f9540ceb2bb69b4c509cd5d3bb3e6d8ad3a4ab799ebf8f7" "2628939b8881388a9251b1bb71bc9dd7c6cffd5252104f9ef236ddfd8dbbf74a" "8746b94181ba961ebd07c7397339d6a7160ee29c75ca1734aa3744274cbe0370" "e2d32717818adc2d29062fc147bd263b6cd65fa6d02a0400045aec75acf20657" "a5ee4566c9ff5eed763681b0845fa3a164bc54561d216dc3a762f41f559c181f" "5bafdfa3e21f921abf9b9fd77e1e0ce032e62e3a6f8f13ec8ce7945727c654e9" "b5c3c59e2fff6877030996eadaa085a5645cc7597f8876e982eadc923f597aca" "faf956fa69deb44a905446d6f2df4ea123ce99fcfabb261338e7c73a1c3b2c27" "da75eceab6bea9298e04ce5b4b07349f8c02da305734f7c0c8c6af7b5eaa9738" "c1d5759fcb18b20fd95357dcd63ff90780283b14023422765d531330a3d3cec2" "4ade6b630ba8cbab10703b27fd05bb43aaf8a3e5ba8c2dc1ea4a2de5f8d45882" "8b148cf8154d34917dfc794b5d0fe65f21e9155977a36a5985f89c09a9669aa0" "f4d1b183465f2d29b7a2e9dbe87ccc20598e79738e5d29fc52ec8fb8c576fcfd" "691d671429fa6c6d73098fc6ff05d4a14a323ea0a18787daeb93fde0e48ab18b" "2b501400e19b1dd09d8b3708cefcb5227fda580754051a24e8abf3aff0601f87" "88f7ee5594021c60a4a6a1c275614103de8c1435d6d08cc58882f920e0cec65e" "9d5124bef86c2348d7d4774ca384ae7b6027ff7f6eb3c401378e298ce605f83a" "32f22d075269daabc5e661299ca9a08716aa8cda7e85310b9625c434041916af" "dccf4a8f1aaf5f24d2ab63af1aa75fd9d535c83377f8e26380162e888be0c6a9" "014cb63097fc7dbda3edf53eb09802237961cbb4c9e9abd705f23b86511b0a69" "18cf5d20a45ea1dff2e2ffd6fbcd15082f9aa9705011a3929e77129a971d1cb3" "81f53ee9ddd3f8559f94c127c9327d578e264c574cda7c6d9daddaec226f87bb" "a8354a5bb676d49a45ddf1289a53034cb34fda9193f412f314bdb91c82326ee9" "8d3ef5ff6273f2a552152c7febc40eabca26bae05bd12bc85062e2dc224cde9a" "2721b06afaf1769ef63f942bf3e977f208f517b187f2526f0e57c1bd4a000350" "7ec8fd456c0c117c99e3a3b16aaf09ed3fb91879f6601b1ea0eeaee9c6def5d9" "dfb1c8b5bfa040b042b4ef660d0aab48ef2e89ee719a1f24a4629a0c5ed769e8" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" default))
  '(flycheck-emacs-lisp-initialize-packages t)
  '(indent-tabs-mode nil)
  '(ivy-initial-inputs-alist nil)
  '(ivy-prescient-retain-classic-highlighting t)
  '(ivy-use-selectable-prompt t)
- '(menu-bar-mode nil)
  '(package-archives
    '(("org" . "https://orgmode.org/elpa/")
      ("melpa" . "https://melpa.org/packages/")
@@ -740,12 +640,12 @@
  '(package-selected-packages
    '(nano-theme quelpa-leaf lsp-mode flycheck-elsa flycheck-package flycheck transient-dwim leaf-convert leaf-tree blackout el-get hydra leaf-keywords leaf))
  '(prescient-aggressive-file-save t)
- '(scroll-bar-mode nil)
- '(tool-bar-mode nil)
+ '(scroll-bar-mode nil nil nil "Customized with leaf in `cus-start' block")
+ '(tool-bar-mode nil nil nil "Customized with leaf in `cus-start' block")
  '(truncate-lines t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Cica" :foundry "outline" :slant normal :weight regular :height 120 :width normal)))))
