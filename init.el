@@ -1,4 +1,4 @@
-;;; <leaf-install-code>
+;;;; <leaf-install-code>
 (eval-and-compile
   (customize-set-variable
    'package-archives '(("org" . "https://orgmode.org/elpa/")
@@ -33,6 +33,8 @@
       (evil-mode 1)
       (evil-set-initial-state 'prog-mode 'normal)
       (setq evil-default-state 'insert)
+      (evil-set-initial-state 'text-mode 'insert)
+      (evil-set-initial-state 'org-mode 'insert)
       ;; (setq evil-normal-state-cursor '(box "purple"))
       ;; (setq evil-emacs-state-cursor '(bar "green"))
       ;; (setq evil-insert-state-cursor '(bar "green"))
@@ -49,7 +51,7 @@
       :after evil
       :ensure t
       :config
-      (evil-collection-init '(calendar dired eshell)))
+      (evil-collection-init '(calendar dired eshell treemacs)))
     ;; (leaf skk
     ;;   :ensure ddskk
     ;;   :custom ((default-input-method . "japanese-skk"))
@@ -137,56 +139,9 @@
       ;; you can easily see the difference tree-sitter-hl-mode makes for python, ts or tsx
       ;; by switching on and off
       (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-
     (leaf tree-sitter-langs
       :ensure t
       :after tree-sitter)
-    (leaf typescript-mode
-      :ensure t
-      :after tree-sitter
-      :config
-      ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
-      ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
-      (define-derived-mode typescriptreact-mode typescript-mode
-        "TypeScript TSX")
-
-      ;; use our derived mode for tsx files
-      (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-      ;; by default, typescript-mode is mapped to the treesitter typescript parser
-      ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
-      (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
-
-    (leaf quelpa-leaf
-      :ensure t
-      :config
-      (quelpa
-       '(quelpa-leaf
-         :fetcher git
-         :url "https://github.com/quelpa/quelpa-leaf.git"))
-      (require 'quelpa-leaf)
-      (quelpa-leaf-init)
-      )
-    (leaf nano-theme
-      :ensure t
-      ;; :defer t
-      :quelpa (nano-theme
-               :fetcher github
-               :repo "rougier/nano-theme"))
-    ;; https://github.com/orzechowskid/tsi.el/
-    ;; great tree-sitter-based indentation for typescript/tsx, css, json
-    (leaf tsi
-      :after tree-sitter
-      :quelpa (tsi :fetcher github :repo "orzechowskid/tsi.el")
-      :quelpa (:upgrade nil)
-      ;; define autoload definitions which when actually invoked will cause package to be loaded
-      :commands (tsi-typescript-mode tsi-json-mode tsi-css-mode)
-      :init
-      (add-hook 'typescript-mode-hook (lambda () (tsi-typescript-mode 1)))
-      (add-hook 'json-mode-hook (lambda () (tsi-json-mode 1)))
-      (add-hook 'css-mode-hook (lambda () (tsi-css-mode 1)))
-      (add-hook 'scss-mode-hook (lambda () (tsi-scss-mode 1))))
-
-
     (leaf org-journal
       :ensure t
       :config
@@ -240,14 +195,14 @@
     (leaf doom-themes :ensure t)
     (leaf zenburn-theme :ensure t)
     (leaf modus-themes :ensure t)
-    ;; (leaf highlight-indent-guides :ensure t
-    ;;   :config
-    ;;   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-    ;;   (setq highlight-indent-guides-method 'character)
-    ;;   (setq highlight-indent-guides-responsive "stack")
-    ;;   ;; (set-face-foreground 'highlight-indent-guides-top-character-face "DarkOliveGreen")
-    ;;   ;; (set-face-foreground 'highlight-indent-guides-character-face "DarkSlateGray")
-    ;;   )
+    (leaf highlight-indent-guides :ensure t
+      :config
+      (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+      (setq highlight-indent-guides-method 'character)
+      ;; (setq highlight-indent-guides-responsive "stack")
+      ;; (set-face-foreground 'highlight-indent-guides-top-character-face "DarkOliveGreen")
+      ;; (set-face-foreground 'highlight-indent-guides-character-face "DarkSlateGray")
+      )
     (leaf svg-clock :ensure t)
     (leaf markdown-mode :ensure t
       :mode ("\\.md\\'" . gfm-mode)
