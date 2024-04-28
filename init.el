@@ -277,6 +277,9 @@
       (when (eq system-type 'windows-nt)
         (setq sly-lisp-implementations
               '((sbcl ("C:\\Program Files\\Steel Bank Common Lisp\\sbcl.exe") :coding-system utf-8-unix)))))
+    (leaf company
+      :ensure t
+      :init (global-company-mode))
     ;; </leaf-install-code>
     )
 
