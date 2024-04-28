@@ -50,8 +50,9 @@
     (leaf evil-collection
       :after evil
       :ensure t
-      :config
-      (evil-collection-init '(calendar dired eshell treemacs)))
+      ;; :config
+      ;; (evil-collection-init '(calendar dired eshell treemacs))
+      )
     ;; (leaf skk
     ;;   :ensure ddskk
     ;;   :custom ((default-input-method . "japanese-skk"))
