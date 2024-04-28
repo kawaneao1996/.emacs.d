@@ -280,7 +280,8 @@
       (add-hook 'lisp-mode-hook #'sly))
     (leaf company
       :ensure t
-      :init (add-hook 'lisp-mode-hook 'company-mode))
+      :init (add-hook 'prog-mode-hook 'company-mode)
+      (add-hook 'sly-mrepl-mode-hook 'company-mode))
     ;; </leaf-install-code>
     )
 
