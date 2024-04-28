@@ -276,10 +276,11 @@
       :config
       (when (eq system-type 'windows-nt)
         (setq sly-lisp-implementations
-              '((sbcl ("C:\\Program Files\\Steel Bank Common Lisp\\sbcl.exe") :coding-system utf-8-unix)))))
+              '((sbcl ("C:\\Program Files\\Steel Bank Common Lisp\\sbcl.exe") :coding-system utf-8-unix))))
+      (add-hook 'lisp-mode-hook #'sly))
     (leaf company
       :ensure t
-      :init (global-company-mode))
+      :init (add-hook 'lisp-mode-hook 'company-mode))
     ;; </leaf-install-code>
     )
 
