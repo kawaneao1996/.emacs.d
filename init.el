@@ -249,7 +249,7 @@
         :init-value nil
         ;; The indicator for the mode line.
         :lighter " ResizeFrame"
-        ;; The minor mode bindings.
+        ;; the minor mode bindings.
         :keymap resize-frame-map
         :global t
         (if (<= (length (window-list)) 1)
@@ -310,6 +310,8 @@
     (set-face-background 'tooltip "black")
     ;; カーソルを当てたときのtooltipの前景色（文字色）を変更
     (set-face-foreground 'tooltip "white")
+    ;; 現在行を強調
+    (global-hl-line-mode t)
     )
   (defun create-scratch-buffer
       nil "create scratch buffer"
