@@ -379,6 +379,10 @@
 ;; org-capture
 ;; キーバインドの設定
 (global-set-key (kbd "C-c c") 'org-capture)
+;; メモをC-M-^一発で見るための設定
+;; https://qiita.com/takaxp/items/0b717ad1d0488b74429d から拝借
+(global-set-key (kbd "C-M-^") '(lambda () (interactive)
+                                 (show-org-buffer)))
 
 (leaf autorevert
   :doc "revert buffers when files on disk change"
