@@ -42,7 +42,8 @@
       (setq evil-move-cursor-back nil) ;改行文字の上に移動可能にする(C-x C-e用)
       (setq evil-esc-delay 0)
       (defalias 'evil-insert-state 'evil-emacs-state)
-      (define-key evil-emacs-state-map (kbd "<escape>") 'evil-normal-state)
+      ;; (define-key evil-emacs-state-map (kbd "<escape>") 'evil-normal-state)
+      (define-key evil-emacs-state-map (kbd "C-[") 'evil-normal-state)
       ;; evil-collection
       (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
       (setq evil-want-keybinding nil)
@@ -143,6 +144,7 @@
     (leaf tree-sitter-langs
       :ensure t
       :after tree-sitter)
+    (global-set-key (kbd "C-c a") 'org-agenda)
     (leaf org-journal
       :ensure t
       :config
